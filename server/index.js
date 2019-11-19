@@ -1,5 +1,6 @@
 import Koa from "koa";
 import Router from "koa-router";
+import db from './plugins/db';
 
 const app = new Koa();
 
