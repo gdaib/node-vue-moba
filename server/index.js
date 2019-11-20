@@ -1,15 +1,20 @@
 import Koa from "koa";
 import Router from "koa-router";
-import db from './plugins/db';
+import bodyParser from "koa-bodyparser";
+import cors from "koa2-cors";
+
+import adminRouter from "./routes/admin";
+import db from "./plugins/db";
 
 const app = new Koa();
 
+// app.use(cors());
+app.use(bodyParser());
+
 const router = new Router();
 
-router.get("/", (ctx, next) => {
-  ctx.body = "hello world";
-});
-
+const apiPrefix = "/api/v1";
+router.use("/admin/api/v1", adminRouter.routes(), adminRouter.allowedMethods());
 app.use(router.routes()).use(router.allowedMethods());
 
 module.exports = app;
