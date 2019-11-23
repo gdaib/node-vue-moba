@@ -8,7 +8,7 @@ import db from "./plugins/db";
 
 const app = new Koa();
 
-// app.use(cors());
+app.use(cors());
 app.use(bodyParser());
 
 const router = new Router();
