@@ -2,6 +2,8 @@ import Category from "../../models/Category";
 
 import Router from "koa-router";
 
+import { convertListToTree } from '../../utils'
+
 const router = new Router();
 
 router.post("/categories", async (ctx, next) => {
@@ -16,7 +18,15 @@ router.post("/categories", async (ctx, next) => {
 });
 
 router.get('/categoriesTree', async (ctx, next) => {
-  
+  const data = await Category.find().lean() // 调用此方法，返回的就是 js 对象，而不是 mongoose doc（对象类型会被冻结）
+
+  const tree = convertListToTree(data)
+
+  ctx.body = {
+    code: 0,
+    data: tree,
+    msg: 'success'
+  }
 })
 
 router.get("/categories", async (ctx, next) => {
