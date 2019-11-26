@@ -80,6 +80,14 @@ module.exports = {
       })
       .end()
 
+
+    config.module
+      .rule('my-loader')
+      .test(/\.vue$/)
+      .include.add(resolve('/src'))
+      .loader(path.resolve(__dirname, './my-loader'))
+      .end()
+
     // set preserveWhitespace
     config.module
       .rule('vue')
@@ -104,7 +112,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()

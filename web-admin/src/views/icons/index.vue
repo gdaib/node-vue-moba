@@ -45,7 +45,8 @@ export default {
   data() {
     return {
       svgIcons,
-      elementIcons
+      elementIcons,
+      data: `requireNodeModules('normalize.css')`
     }
   },
   methods: {
