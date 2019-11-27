@@ -45,6 +45,10 @@ module.exports = {
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
+      },
+      'admin/api/v1': {
+        target: 'http://127.0.0.1:4000',
+        changeOrigin: true
       }
     },
     after: require('./mock/mock-server.js')
@@ -78,14 +82,6 @@ module.exports = {
       .options({
         symbolId: 'icon-[name]'
       })
-      .end()
-
-
-    config.module
-      .rule('my-loader')
-      .test(/\.vue$/)
-      .include.add(resolve('/src'))
-      .loader(path.resolve(__dirname, './my-loader'))
       .end()
 
     // set preserveWhitespace
