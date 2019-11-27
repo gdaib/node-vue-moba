@@ -8,11 +8,12 @@ import db from "./plugins/db";
 
 const app = new Koa();
 
+
+app.use(bodyParser());
 app.use(cors({
   allowMethods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
-app.use(bodyParser());
 
 const router = new Router();
 

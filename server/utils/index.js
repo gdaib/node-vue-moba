@@ -9,13 +9,13 @@ export function convertListToTree(list) {
 
   for (let i = 0; i < list.length; i++) {
     const item = list[i]
-    const pid = item.parentId;
+    const parent = item.parent;
 
-    if (pid == 0) {
+    if (!parent) {
       data.push(item)
     } else {
-      const parent = map[pid]
-      parent.children = (parent.children || []).concat(item)
+      const realParent = map[parent._id]
+      realParent.children = (realParent.children || []).concat(item)
     }
   }
 
