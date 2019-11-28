@@ -9,7 +9,7 @@
         size="meidum"
       />
     </div>
-    <el-tree v-bind="treeConfig" class="cate-tree">
+    <el-tree v-loading="treeConfig.loading" v-bind="treeConfig" class="cate-tree">
       <span slot-scope="{ node, data }" class="cate-ops">
         <span>{{ data.name }}</span>
         <span>
@@ -22,12 +22,17 @@
       </span>
     </el-tree>
 
-    <add-category-dialog :visible.sync="categoryDialog.visible" title="新增类目" />
+    <add-category-dialog
+      ref="cateDialog"
+      :visible.sync="categoryDialog.visible"
+      :title="categoryDialog.id ? '编辑类目' : '新增类目'"
+      @handleSuccess="getData"
+    />
   </div>
 </template>
 
 <script>
-import { getCategoriesTree } from '@/api/categories'
+import { getCategoriesTree, removeCategory } from '@/api/categories'
 
 import AddCategoryDialog from './components/add-category-dialog'
 
@@ -41,11 +46,14 @@ export default {
         data: [],
         props: {
           label: 'name'
-        }
+        },
+        loading: false
       },
       searchKey: '',
       categoryDialog: {
-        visible: false
+        visible: false,
+        id: '',
+        parentId: ''
       }
     }
   },
@@ -54,16 +62,42 @@ export default {
   },
   methods: {
     getData() {
-      getCategoriesTree().then(res => {
-        this.treeConfig.data = res.data.payload
-      })
+      this.treeConfig.loading = true
+      getCategoriesTree()
+        .then(res => {
+          this.treeConfig.data = res.data.payload
+        })
+        .finally(() => {
+          this.treeConfig.loading = false
+        })
     },
     handleAddCate() {
       this.categoryDialog.visible = true
+      this.categoryDialog.id = ''
+      this.categoryDialog.parentId = ''
     },
     addChildCate() {},
-    modifyCate() {},
-    deleteCate() {}
+    modifyCate(data) {
+      console.log(data)
+      this.categoryDialog.visible = true
+      this.categoryDialog.id = data.id
+      this.categoryDialog.parentId = data.parent
+      this.$nextTick(() => {
+        this.$refs.cateDialog.set(data)
+      })
+    },
+    deleteCate({ _id }) {
+      this.$confirm('此操作会永久删除分类, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        removeCategory(_id).then(() => {
+          this.$message.success('删除成功')
+          this.getData()
+        })
+      })
+    }
   }
 }
 </script>

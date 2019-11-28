@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import ElFormRenderer from '@femessage/el-form-renderer'
 
 import Cookies from 'js-cookie'
 
@@ -35,6 +36,9 @@ if (process.env.NODE_ENV === 'production') {
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
+
+// 注册form renderer
+Vue.component(ElFormRenderer.name, ElFormRenderer)
 
 // register global utility filters
 Object.keys(filters).forEach(key => {
