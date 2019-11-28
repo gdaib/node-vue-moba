@@ -9,18 +9,18 @@
 </template>
 
 <script>
-import { createCategory } from '@/api/categories'
+import { createCategory, putCategory } from "@/api/categories";
 
 export default {
   props: {
     visible: Boolean,
-    parentId: {
+    parent: {
       type: String,
-      default: ''
+      default: ""
     },
     id: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   data() {
@@ -28,52 +28,55 @@ export default {
       loading: false,
       content: [
         {
-          id: 'name',
-          type: 'input',
-          label: '分类名称',
+          id: "name",
+          type: "input",
+          label: "分类名称",
           el: {
-            placeholder: '请输入'
+            placeholder: "请输入"
           }
         }
       ]
-    }
+    };
   },
   watch: {
     visible(val) {
       if (val) {
-        this.set({ name: '' })
+        this.set({ name: "" });
       }
     }
   },
   methods: {
     cancel() {
-      this.$emit('update:visible', false)
+      this.$emit("update:visible", false);
     },
     async handleClick() {
       try {
-        this.loading = true
+        this.loading = true;
 
-        const content = this.$refs.form.getFormValue()
+        const content = this.$refs.form.getFormValue();
 
         const params = {
-          ...content,
-          id: this.id,
-          parentId: this.parentId
-        }
+          ...content
+        };
 
-        const res = await createCategory(params)
-        console.log(res)
-        this.$emit('handleSuccess')
-        this.cancel()
+        if (this.id) params.id = this.id;
+        if (this.parent) params.parent = this.parent;
+
+        const method = this.id ? putCategory : createCategory
+
+        const res = await method(params);
+
+        this.$emit("handleSuccess");
+        this.cancel();
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
     set(data) {
-      this.$refs.form.updateValue(data)
+      this.$refs.form && this.$refs.form.updateForm(data);
     }
   }
-}
+};
 </script>
 
 <style>

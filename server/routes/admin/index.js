@@ -46,7 +46,7 @@ router.get('/rest/categories/tree', async (ctx, next) => {
 
   ctx.body = {
     code: 0,
-    data: tree,
+    payload: tree,
     msg: 'success'
   }
 })
