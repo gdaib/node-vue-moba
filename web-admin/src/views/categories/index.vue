@@ -9,7 +9,14 @@
         size="meidum"
       />
     </div>
-    <el-tree v-loading="treeConfig.loading" v-bind="treeConfig" class="cate-tree">
+    <el-tree
+      v-loading="treeConfig.loading"
+      v-bind="treeConfig"
+      default-expand-all
+      draggable
+      @node-drop="handleDrop"
+      class="cate-tree"
+    >
       <span slot-scope="{ node, data }" class="cate-ops">
         <span>{{ data.name }}</span>
         <span>
@@ -33,7 +40,11 @@
 </template>
 
 <script>
-import { getCategoriesTree, removeCategory } from "@/api/categories";
+import {
+  getCategoriesTree,
+  removeCategory,
+  handleCategoriesSort
+} from "@/api/categories";
 
 import AddCategoryDialog from "./components/add-category-dialog";
 
@@ -48,6 +59,7 @@ export default {
         props: {
           label: "name"
         },
+        nodeKey: "_id",
         loading: false
       },
       searchKey: "",
@@ -71,6 +83,28 @@ export default {
         .finally(() => {
           this.treeConfig.loading = false;
         });
+    },
+    handleDrop(draggingNode, dropNode, dropType, ev) {
+      this.$nextTick(() => {
+
+        const isInner = dropType === "inner";
+
+        let data = isInner ? dropNode.childNodes : dropNode.parent.childNodes;
+
+        const parent = isInner ? dropNode.data._id : dropNode.parent.key || "";
+
+        data = data.map(({ data }, i) => ({
+          sort: i,
+          id: data._id,
+          parent: parent || null
+        }));
+
+        handleCategoriesSort(data).then(res => {
+          this.$message.success("排序成功");
+          this.getData();
+        });
+      });
+      // console.log("tree drag end: ",dropNode, dropNode && dropNode.label, dropType);
     },
     handleAddCate() {
       this.categoryDialog.visible = true;
