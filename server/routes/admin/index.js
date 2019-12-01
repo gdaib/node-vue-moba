@@ -19,12 +19,22 @@ router.get("/rest/:resource", async (ctx, next) => {
     queryOptions.populate = "parent";
   }
 
-  const payload = await ctx.Model.find()
+  const { size, page = 1 } = ctx.query;
+  
+  const skip = size * (page - 1);
+
+  const data = await ctx.Model.find()
     .setOptions(queryOptions)
-    .limit(10);
+    .limit(skip);
+
+  const total = await ctx.Model.count();
+
   ctx.body = {
     code: 0,
-    payload
+    payload: {
+      data,
+      total
+    }
   };
 });
 
