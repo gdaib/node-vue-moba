@@ -1,6 +1,6 @@
 import axios from "@/http";
 
-const prefix = "/admin/api/v1";
+const prefix = "/api/v1/admin";
 const apiType = "/rest/categories";
 
 const api = `${prefix}${apiType}`;

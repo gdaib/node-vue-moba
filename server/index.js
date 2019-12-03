@@ -10,16 +10,26 @@ import db from "./plugins/db";
 const app = new Koa();
 
 app.use(bodyParser());
-app.use(cors({
-  allowMethods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-}));
+app.use(
+  cors({
+    allowMethods: ["GET", "PUT", "POST", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+    allowHeaders: ["Content-Type", "Authorization", "Accept"]
+  })
+);
 
 const router = new Router();
 
 const apiPrefix = "/api/v1";
-router.use(`admin${apiPrefix}`, adminRouter.routes(), adminRouter.allowedMethods());
-router.use(`${apiPrefix}/common`, commonRouter.routes(), commonRouter.allowedMethods());
+router.use(
+  `${apiPrefix}/admin`,
+  adminRouter.routes(),
+  adminRouter.allowedMethods()
+);
+router.use(
+  `${apiPrefix}/common`,
+  commonRouter.routes(),
+  commonRouter.allowedMethods()
+);
 app.use(router.routes()).use(router.allowedMethods());
 
 module.exports = app;
