@@ -1,3 +1,4 @@
+import AliOSS from 'ali-oss'
 
 export function convertListToTree(list) {
   const map = {},
@@ -22,4 +23,21 @@ export function convertListToTree(list) {
   // console.log(data, 'hello world');
 
   return data
+}
+
+
+
+// const aliOSSclient = new AliOSS({
+//   region: process.env.region,
+//   bucket: process.env.bucket,
+//   accessKeyId: process.env.accessKeyId,
+//   accessKeySecret: process.env.accessKeySecret
+// })
+
+export const uploadFile = (file) => {
+  aliOSSclient.multipartUpload(
+    this.dir + key,
+    file,
+    this.uploadOptions
+  )
 }

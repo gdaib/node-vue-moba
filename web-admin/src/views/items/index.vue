@@ -28,7 +28,7 @@
         </span>
       </span>
     </el-tree>-->
-    <el-data-table v-bind="tableConfig" @update="tableConfig.update"></el-data-table>
+    <el-data-table v-bind="tableConfig" @update="tableConfig.update" />
 
     <add-category-dialog
       ref="cateDialog"
@@ -41,16 +41,18 @@
 </template>
 
 <script>
-import ElDataTable from "@femessage/el-data-table";
-import UploadToAli from "@femessage/upload-to-ali";
+import ElDataTable from '@femessage/el-data-table'
+import UploadToAli from '@femessage/upload-to-ali'
 
 import {
-  getCategoriesTree,
+  // getCategoriesTree,
   removeCategory,
   handleCategoriesSort
-} from "@/api/categories";
+} from '@/api/categories'
 
-import AddCategoryDialog from "./components/add-category-dialog";
+import { upload } from '@/api/common'
+
+import AddCategoryDialog from './components/add-category-dialog'
 
 export default {
   components: {
@@ -68,23 +70,24 @@ export default {
       //   loading: false
       // },
       tableConfig: {
-        url: "/admin/api/v1/rest/item",
-        dataPath: "payload.data",
-        totalPath: "payload.total",
+        url: '/admin/api/v1/rest/item',
+        dataPath: 'payload.data',
+        totalPath: 'payload.total',
+        id: '_id',
         columns: [
           {
-            label: "装备名称",
-            prop: "name"
+            label: '装备名称',
+            prop: 'name'
           },
           {
-            label: "装备图标",
-            prop: "icon"
+            label: '装备图标',
+            prop: 'icon'
           }
         ],
         update(data) {
           data.forEach(item => {
-            item.id = item._id;
-          });
+            item.id = item._id
+          })
         },
         // searchForm: [
         //   {
@@ -95,24 +98,38 @@ export default {
         // ]
         form: [
           {
-            id: "name",
-            label: "装备名字",
-            type: "input"
+            id: 'name',
+            label: '装备名字',
+            type: 'input'
           },
           {
-            id: "icon",
-            label: "装备图标",
-            component: UploadToAli
+            id: 'icon',
+            label: '装备图标',
+            component: UploadToAli,
+            el: {
+              async httpRequest(file) {
+                const formData = new FormData()
+                formData.append('name', 'Multer')
+                formData.append('file', file)
+
+                console.log(formData, '=======')
+                const payload = await upload(formData)
+
+                console.log(payload)
+
+                return 'http://www.baidu.com'
+              }
+            }
           }
         ]
       },
-      searchKey: "",
+      searchKey: '',
       categoryDialog: {
         visible: false,
-        id: "",
-        parent: ""
+        id: '',
+        parent: ''
       }
-    };
+    }
   },
   mounted() {
     // this.getData();
@@ -121,57 +138,57 @@ export default {
   methods: {
     handleDrop(draggingNode, dropNode, dropType, ev) {
       this.$nextTick(() => {
-        const isInner = dropType === "inner";
+        const isInner = dropType === 'inner'
 
-        let data = isInner ? dropNode.childNodes : dropNode.parent.childNodes;
+        let data = isInner ? dropNode.childNodes : dropNode.parent.childNodes
 
-        const parent = isInner ? dropNode.data._id : dropNode.parent.key || "";
+        const parent = isInner ? dropNode.data._id : dropNode.parent.key || ''
 
         data = data.map(({ data }, i) => ({
           sort: i,
           id: data._id,
           parent: parent || null
-        }));
+        }))
 
         handleCategoriesSort(data).then(res => {
-          this.$message.success("排序成功");
-          this.getData();
-        });
-      });
+          this.$message.success('排序成功')
+          this.getData()
+        })
+      })
       // console.log("tree drag end: ",dropNode, dropNode && dropNode.label, dropType);
     },
     handleAddCate() {
-      this.categoryDialog.visible = true;
-      this.categoryDialog.id = "";
-      this.categoryDialog.parentId = null;
+      this.categoryDialog.visible = true
+      this.categoryDialog.id = ''
+      this.categoryDialog.parentId = null
     },
     addChildCate(data) {
-      this.categoryDialog.visible = true;
-      this.categoryDialog.id = "";
-      this.categoryDialog.parent = data._id;
+      this.categoryDialog.visible = true
+      this.categoryDialog.id = ''
+      this.categoryDialog.parent = data._id
     },
     modifyCate(data) {
-      this.categoryDialog.visible = true;
-      this.categoryDialog.id = data._id;
-      this.categoryDialog.parent = data.parent;
+      this.categoryDialog.visible = true
+      this.categoryDialog.id = data._id
+      this.categoryDialog.parent = data.parent
       this.$nextTick(() => {
-        this.$refs.cateDialog.set(data);
-      });
+        this.$refs.cateDialog.set(data)
+      })
     },
     deleteCate({ _id }) {
-      this.$confirm("此操作会永久删除分类, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('此操作会永久删除分类, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       }).then(() => {
         removeCategory(_id).then(() => {
-          this.$message.success("删除成功");
-          this.getData();
-        });
-      });
+          this.$message.success('删除成功')
+          this.getData()
+        })
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
