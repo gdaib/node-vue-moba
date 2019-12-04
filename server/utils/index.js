@@ -1,4 +1,5 @@
-import AliOSS from 'ali-oss'
+require("dotenv").config();
+import AliOSS from "ali-oss";
 
 export function convertListToTree(list) {
   const map = {},
@@ -6,38 +7,33 @@ export function convertListToTree(list) {
 
   list.forEach(item => {
     map[item._id] = item;
-  })
+  });
 
   for (let i = 0; i < list.length; i++) {
-    const item = list[i]
+    const item = list[i];
     const parent = item.parent;
 
     if (!parent) {
-      data.push(item)
+      data.push(item);
     } else {
-      const realParent = map[parent._id]
-      realParent.children = (realParent.children || []).concat(item)
+      const realParent = map[parent._id];
+      realParent.children = (realParent.children || []).concat(item);
     }
   }
 
   // console.log(data, 'hello world');
 
-  return data
+  return data;
 }
 
+const aliOSSclient = new AliOSS({
+  region: process.env.OSS_REGION,
+  bucket: process.env.OSS_BUCKET,
+  accessKeyId: process.env.OSS_KEY,
+  accessKeySecret: process.env.OSS_SECRET
+});
 
+const dir = process.env.OSS_DIR;
 
-// const aliOSSclient = new AliOSS({
-//   region: process.env.region,
-//   bucket: process.env.bucket,
-//   accessKeyId: process.env.accessKeyId,
-//   accessKeySecret: process.env.accessKeySecret
-// })
-
-export const uploadFile = (file) => {
-  aliOSSclient.multipartUpload(
-    this.dir + key,
-    file,
-    this.uploadOptions
-  )
-}
+export const uploadFile = ({ filename, file }) =>
+  aliOSSclient.multipartUpload(`${dir}/${filename}`, file);

@@ -1,5 +1,4 @@
 require("@babel/register");
-
 const app = require("../");
 
 const PORT = process.env.PORT || 4000;
