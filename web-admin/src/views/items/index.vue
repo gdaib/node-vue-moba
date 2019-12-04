@@ -28,7 +28,7 @@
         </span>
       </span>
     </el-tree>-->
-    <el-data-table v-bind="tableConfig" @update="tableConfig.update" />
+    <el-data-table v-bind="tableConfig" />
 
     <add-category-dialog
       ref="cateDialog"
@@ -70,7 +70,7 @@ export default {
       //   loading: false
       // },
       tableConfig: {
-        url: '/admin/api/v1/rest/item',
+        url: '/api/v1/admin/rest/item',
         dataPath: 'payload.data',
         totalPath: 'payload.total',
         id: '_id',
@@ -84,11 +84,6 @@ export default {
             prop: 'icon'
           }
         ],
-        update(data) {
-          data.forEach(item => {
-            item.id = item._id
-          })
-        },
         // searchForm: [
         //   {
         //     id: 'name',
@@ -106,18 +101,16 @@ export default {
             id: 'icon',
             label: '装备图标',
             component: UploadToAli,
+            default: '',
             el: {
               async httpRequest(file) {
                 const formData = new FormData()
                 formData.append('name', 'Multer')
                 formData.append('file', file)
 
-                console.log(formData, '=======')
-                const payload = await upload(formData)
+                const { data: { payload }} = await upload(formData)
 
-                console.log(payload)
-
-                return 'http://www.baidu.com'
+                return payload
               }
             }
           }
@@ -133,7 +126,6 @@ export default {
   },
   mounted() {
     // this.getData();
-    console.log(process.env.OSS_BUCKET, process.env)
   },
   methods: {
     handleDrop(draggingNode, dropNode, dropType, ev) {

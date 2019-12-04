@@ -26,14 +26,33 @@ export function convertListToTree(list) {
   return data;
 }
 
-const aliOSSclient = new AliOSS({
-  region: process.env.OSS_REGION,
-  bucket: process.env.OSS_BUCKET,
-  accessKeyId: process.env.OSS_KEY,
-  accessKeySecret: process.env.OSS_SECRET
-});
 
-const dir = process.env.OSS_DIR;
 
-export const uploadFile = ({ filename, file }) =>
-  aliOSSclient.multipartUpload(`${dir}/${filename}`, file);
+
+
+export const imageKeyMap = {
+  'image/jpeg': '.jpg',
+  'image/png': '.png'
+}
+
+export const uploadFile = (() => {
+  const region = process.env.OSS_REGION
+  const bucket = process.env.OSS_BUCKET
+  const aliOSSclient = new AliOSS({
+    region,
+    bucket,
+    accessKeyId: process.env.OSS_KEY,
+    accessKeySecret: process.env.OSS_SECRET
+  });
+  const dir = process.env.OSS_DIR;
+
+  return async (file) => {
+    const key = imageKeyMap[file.mimetype];
+    const fileName = `${Date.now().toString(16)}${key}`
+    const path = `${dir}${fileName}`;
+    await aliOSSclient.put(path, file.buffer)
+    return `//${bucket}.${region}.aliyuncs.com/${path}`
+  }
+})()
+
+
