@@ -36,11 +36,31 @@ export default {
             prop: 'name'
           }
         ],
+        formAttrs: {
+          // inline: true
+        },
         form: [
           {
             id: 'name',
             label: '英雄名字',
             type: 'input'
+          },
+          {
+            id: 'title',
+            label: '称号',
+            type: 'input'
+          },
+          {
+            id: 'categories',
+            label: '类型',
+            type: 'select',
+            options: []
+          },
+          {
+            id: 'difficute',
+            label: '难度',
+            type: 'rate',
+            default: 0
           },
           {
             id: 'avatar',
