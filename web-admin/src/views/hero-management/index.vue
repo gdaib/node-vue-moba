@@ -1,9 +1,10 @@
+
 <template>
-  <div class="items-page">
+  <div class="hero-page">
     <el-data-table v-bind="tableConfig">
-      <el-table-column label="装备图标">
+      <el-table-column label="英雄头像">
         <template slot-scope="{row}">
-          <preview-avatar :src="row.icon" />
+          <preview-avatar :src="row.avatar" />
         </template>
       </el-table-column>
     </el-data-table>
@@ -25,25 +26,25 @@ export default {
   data() {
     return {
       tableConfig: {
-        url: '/api/v1/admin/rest/item',
+        url: '/api/v1/admin/rest/hero',
         dataPath: 'payload.data',
         totalPath: 'payload.total',
         id: '_id',
         columns: [
           {
-            label: '装备名称',
+            label: '英雄名称',
             prop: 'name'
           }
         ],
         form: [
           {
             id: 'name',
-            label: '装备名字',
+            label: '英雄名字',
             type: 'input'
           },
           {
-            id: 'icon',
-            label: '装备图标',
+            id: 'avatar',
+            label: '英雄头像',
             component: UploadToAli,
             default: '',
             el: {
@@ -68,8 +69,7 @@ export default {
 </script>
 
 <style lang="scss">
-.items-page {
+.hero-page {
   padding: 20px;
 }
 </style>
-
