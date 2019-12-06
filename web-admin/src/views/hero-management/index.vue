@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import ElDataTable from '@femessage/el-data-table'
-import UploadToAli from '@femessage/upload-to-ali'
-import previewAvatar from '@/components/preview-avatar'
+import ElDataTable from "@femessage/el-data-table";
+import UploadToAli from "@femessage/upload-to-ali";
+import previewAvatar from "@/components/preview-avatar";
 
-import { upload } from '@/api/common'
+import { upload } from "@/api/common";
 
 export default {
   components: {
@@ -26,14 +26,14 @@ export default {
   data() {
     return {
       tableConfig: {
-        url: '/api/v1/admin/rest/hero',
-        dataPath: 'payload.data',
-        totalPath: 'payload.total',
-        id: '_id',
+        url: "/api/v1/admin/rest/hero",
+        dataPath: "payload.data",
+        totalPath: "payload.total",
+        id: "_id",
         columns: [
           {
-            label: '英雄名称',
-            prop: 'name'
+            label: "英雄名称",
+            prop: "name"
           }
         ],
         formAttrs: {
@@ -41,51 +41,105 @@ export default {
         },
         form: [
           {
-            id: 'name',
-            label: '英雄名字',
-            type: 'input'
+            id: "name",
+            label: "英雄名字",
+            type: "input"
           },
           {
-            id: 'title',
-            label: '称号',
-            type: 'input'
-          },
-          {
-            id: 'categories',
-            label: '类型',
-            type: 'select',
-            options: []
-          },
-          {
-            id: 'difficute',
-            label: '难度',
-            type: 'rate',
-            default: 0
-          },
-          {
-            id: 'avatar',
-            label: '英雄头像',
+            id: "avatar",
+            label: "英雄头像",
             component: UploadToAli,
-            default: '',
+            default: "",
             el: {
               async httpRequest(file) {
-                const formData = new FormData()
-                formData.append('name', 'Multer')
-                formData.append('file', file)
+                const formData = new FormData();
+                formData.append("name", "Multer");
+                formData.append("file", file);
 
                 const {
                   data: { payload }
-                } = await upload(formData)
+                } = await upload(formData);
 
-                return payload
+                return payload;
               }
+            }
+          },
+          {
+            id: "title",
+            label: "称号",
+            type: "input"
+          },
+          {
+            id: "categories",
+            label: "类型",
+            type: "select",
+            options: []
+          },
+          {
+            id: "difficute",
+            label: "难度",
+            type: "rate",
+            default: 0
+          },
+          {
+            id: "skills",
+            label: "技能",
+            type: "rate",
+            default: 0
+          },
+          {
+            id: "attack",
+            label: "攻击",
+            type: "rate",
+            default: 0
+          },
+          {
+            id: "survive",
+            label: "生存",
+            type: "rate",
+            default: 0
+          },
+          {
+            id: "followingWindItems",
+            label: "顺风出装",
+            type: "select",
+            options: []
+          },
+          {
+            id: "headWindItems",
+            label: "逆风出装",
+            type: "select",
+            options: []
+          },
+          {
+            id: "usageTips",
+            label: "使用技巧",
+            type: "input",
+            el: {
+              type: "textarea"
+            }
+          },
+          {
+            id: "battleTips",
+            label: "使用技巧",
+            type: "input",
+            el: {
+              type: "textarea"
+            }
+          },
+          {
+            id: "teamTips",
+            label: "团战思路",
+            type: "input",
+            el: {
+              type: "textarea"
             }
           }
         ]
       }
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="scss">
