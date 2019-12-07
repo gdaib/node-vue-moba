@@ -8,142 +8,61 @@
         </template>
       </el-table-column>
     </el-data-table>
+    <hero-dialog :visible.sync="heroDialog.visible" title="新建英雄" />
   </div>
 </template>
 
 <script>
-import ElDataTable from "@femessage/el-data-table";
-import UploadToAli from "@femessage/upload-to-ali";
-import previewAvatar from "@/components/preview-avatar";
-
-import { upload } from "@/api/common";
+import ElDataTable from '@femessage/el-data-table'
+import previewAvatar from '@/components/preview-avatar'
+import HeroDialog from './components/hero-dialog'
 
 export default {
   components: {
     ElDataTable,
-    previewAvatar
+    previewAvatar,
+    HeroDialog
   },
   data() {
     return {
+      heroDialog: {
+        visible: false
+      },
       tableConfig: {
-        url: "/api/v1/admin/rest/hero",
-        dataPath: "payload.data",
-        totalPath: "payload.total",
-        id: "_id",
-        columns: [
+        url: '/api/v1/admin/rest/hero',
+        dataPath: 'payload.data',
+        totalPath: 'payload.total',
+        id: '_id',
+        hasNew: false,
+        hasEdit: false,
+        headerButtons: [
           {
-            label: "英雄名称",
-            prop: "name"
+            text: '新建',
+            type: 'primary',
+            atClick: () => {
+              this.heroDialog.visible = true
+              this.$router.push({
+                path: '/hero-management/edit'
+              })
+              return false
+            }
           }
         ],
-        formAttrs: {
-          // inline: true
-        },
-        form: [
+        columns: [
           {
-            id: "name",
-            label: "英雄名字",
-            type: "input"
-          },
-          {
-            id: "avatar",
-            label: "英雄头像",
-            component: UploadToAli,
-            default: "",
-            el: {
-              async httpRequest(file) {
-                const formData = new FormData();
-                formData.append("name", "Multer");
-                formData.append("file", file);
-
-                const {
-                  data: { payload }
-                } = await upload(formData);
-
-                return payload;
-              }
-            }
-          },
-          {
-            id: "title",
-            label: "称号",
-            type: "input"
-          },
-          {
-            id: "categories",
-            label: "类型",
-            type: "select",
-            options: []
-          },
-          {
-            id: "difficute",
-            label: "难度",
-            type: "rate",
-            default: 0
-          },
-          {
-            id: "skills",
-            label: "技能",
-            type: "rate",
-            default: 0
-          },
-          {
-            id: "attack",
-            label: "攻击",
-            type: "rate",
-            default: 0
-          },
-          {
-            id: "survive",
-            label: "生存",
-            type: "rate",
-            default: 0
-          },
-          {
-            id: "followingWindItems",
-            label: "顺风出装",
-            type: "select",
-            options: []
-          },
-          {
-            id: "headWindItems",
-            label: "逆风出装",
-            type: "select",
-            options: []
-          },
-          {
-            id: "usageTips",
-            label: "使用技巧",
-            type: "input",
-            el: {
-              type: "textarea"
-            }
-          },
-          {
-            id: "battleTips",
-            label: "使用技巧",
-            type: "input",
-            el: {
-              type: "textarea"
-            }
-          },
-          {
-            id: "teamTips",
-            label: "团战思路",
-            type: "input",
-            el: {
-              type: "textarea"
-            }
+            label: '英雄名称',
+            prop: 'name'
           }
         ]
       }
-    };
+    }
   }
-};
+}
 </script>
 
 <style lang="scss">
 .hero-page {
   padding: 20px;
+
 }
 </style>

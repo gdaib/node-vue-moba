@@ -108,7 +108,7 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/heroes-management',
+    path: '/hero-management',
     component: Layout,
     children: [
       {
@@ -116,6 +116,13 @@ export const constantRoutes = [
         component: () => import('@/views/hero-management/index'),
         name: 'hero-management',
         meta: { title: '英雄管理页面' }
+      },
+      {
+        path: 'edit',
+        hidden: true,
+        component: () => import('@/views/hero-management/edit'),
+        name: 'hero-edit',
+        meta: { title: '英雄编辑页面' }
       }
     ]
   },

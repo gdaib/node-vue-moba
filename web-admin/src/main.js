@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import ElFormRenderer from '@femessage/el-form-renderer'
+import ElFormRenderer from '@/components/el-form-renerer'
 import Axios from '@/http'
+import { upload } from '@/api/common'
 
 Vue.prototype.$axios = Axios
 
@@ -42,6 +43,18 @@ Vue.use(Element, {
 
 // 注册form renderer
 Vue.component(ElFormRenderer.name, ElFormRenderer)
+
+Vue.prototype.$uploadRequest = async(file) => {
+  const formData = new FormData()
+  formData.append('name', 'Multer')
+  formData.append('file', file)
+
+  const {
+    data: { payload }
+  } = await upload(formData)
+
+  return payload
+}
 
 // register global utility filters
 Object.keys(filters).forEach(key => {
