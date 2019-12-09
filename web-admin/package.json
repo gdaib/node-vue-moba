@@ -45,7 +45,7 @@
   "dependencies": {
     "@femessage/el-data-table": "^1.15.0",
     "@femessage/el-form-renderer": "^1.12.1",
-    "@femessage/upload-to-ali": "^1.9.2",
+    "@femessage/upload-to-ali": "^2.1.0",
     "axios": "0.18.1",
     "clipboard": "2.0.4",
     "codemirror": "5.45.0",

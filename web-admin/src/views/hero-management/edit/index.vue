@@ -22,12 +22,13 @@
         />
       </div>
       <div v-else>
-        <el-form-renderer
-          ref="skillForm"
-          key="skillForm"
-          :content="skillContent"
-          label-width="80px"
-        />
+        <el-form label-width="80px">
+          <hero-skill-input
+            v-for="(item, index) in skillContent"
+            v-model="skillContent[index]"
+            :key="index"
+          ></hero-skill-input>
+        </el-form>
       </div>
     </div>
     <div class="bottom-panel">
@@ -38,133 +39,128 @@
 </template>
 
 <script>
-import UploadToAli from '@/components/UploadToAli'
+import UploadToAli from "@femessage/upload-to-ali";
+
+import HeroSkillInput from "../components/hero-skill-input";
 
 export default {
+  components: {
+    HeroSkillInput
+  },
   data() {
     return {
       tabs: [
         {
-          label: '英雄属性',
-          id: 'attrs'
+          label: "英雄属性",
+          id: "attrs"
         },
         {
-          label: '英雄技能',
-          id: 'skill'
+          label: "英雄技能",
+          id: "skill"
         }
       ],
-      activeTab: 'attrs',
+      activeTab: "attrs",
       attrsContent: [
         {
-          id: 'name',
-          label: '英雄名字',
-          type: 'input'
+          id: "name",
+          label: "英雄名字",
+          type: "input"
         },
         {
-          id: 'avatar',
-          label: '英雄头像',
+          id: "avatar",
+          label: "英雄头像",
           component: UploadToAli,
-          default: ''
+          default: ""
         },
         {
-          id: 'title',
-          label: '称号',
-          type: 'input'
+          id: "title",
+          label: "称号",
+          type: "input"
         },
         {
-          id: 'categories',
-          label: '类型',
-          type: 'select',
+          id: "categories",
+          label: "类型",
+          type: "select",
           options: []
         },
         {
-          id: 'difficute',
-          label: '难度',
-          type: 'rate',
+          id: "difficute",
+          label: "难度",
+          type: "rate",
           default: 0
         },
         {
-          id: 'skills',
-          label: '技能',
-          type: 'rate',
+          id: "skills",
+          label: "技能",
+          type: "rate",
           default: 0
         },
         {
-          id: 'attack',
-          label: '攻击',
-          type: 'rate',
+          id: "attack",
+          label: "攻击",
+          type: "rate",
           default: 0
         },
         {
-          id: 'survive',
-          label: '生存',
-          type: 'rate',
+          id: "survive",
+          label: "生存",
+          type: "rate",
           default: 0
         },
         {
-          id: 'followingWindItems',
-          label: '顺风出装',
-          type: 'select',
+          id: "followingWindItems",
+          label: "顺风出装",
+          type: "select",
           options: []
         },
         {
-          id: 'headWindItems',
-          label: '逆风出装',
-          type: 'select',
+          id: "headWindItems",
+          label: "逆风出装",
+          type: "select",
           options: []
         },
         {
-          id: 'usageTips',
-          label: '使用技巧',
-          type: 'input',
+          id: "usageTips",
+          label: "使用技巧",
+          type: "input",
           el: {
-            type: 'textarea'
+            type: "textarea"
           }
         },
         {
-          id: 'battleTips',
-          label: '使用技巧',
-          type: 'input',
+          id: "battleTips",
+          label: "使用技巧",
+          type: "input",
           el: {
-            type: 'textarea'
+            type: "textarea"
           }
         },
         {
-          id: 'teamTips',
-          label: '团战思路',
-          type: 'input',
+          id: "teamTips",
+          label: "团战思路",
+          type: "input",
           el: {
-            type: 'textarea'
+            type: "textarea"
           }
         }
       ],
-      skillContent: [
-        {
-          id: 'input',
-          label: '技能名称',
-          type: 'input'
-        }
-      ]
-    }
+      skillContent: []
+    };
   },
   computed: {
     showAddSkill() {
-      return this.activeTab === 'skill'
+      return this.activeTab === "skill";
     }
   },
   methods: {
     handleChange(id) {
-      this.activeTab = id
+      this.activeTab = id;
     },
     handleAddSkill() {
-      this.skillContent.push({
-        id: 'input',
-        label: '技能名称',
-        type: 'input'
-      })
+      this.skillContent.push({});
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
