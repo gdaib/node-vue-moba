@@ -27,6 +27,9 @@
             v-for="(item, index) in skillContent"
             v-model="skillContent[index]"
             :key="index"
+            :extraData="{index}"
+            :title="`技能${index+1}`"
+            @handleClickMinus="handleClickMinus"
           ></hero-skill-input>
         </el-form>
       </div>
@@ -59,7 +62,7 @@ export default {
           id: "skill"
         }
       ],
-      activeTab: "attrs",
+      activeTab: "skill",
       attrsContent: [
         {
           id: "name",
@@ -144,7 +147,7 @@ export default {
           }
         }
       ],
-      skillContent: []
+      skillContent: [{}]
     };
   },
   computed: {
@@ -155,6 +158,9 @@ export default {
   methods: {
     handleChange(id) {
       this.activeTab = id;
+    },
+    handleClickMinus({ index }) {
+      this.skillContent.splice(index, 1)
     },
     handleAddSkill() {
       this.skillContent.push({});
