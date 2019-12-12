@@ -1,6 +1,6 @@
 <template>
   <flow-card class="hero-skill-input">
-    <span slot="tilte" class="title-main"><i class="el-icon-minus el-icon" @click="handleClickMinus"></i>{{title}}</span>
+    <span slot="tilte" class="title-main" title="删除"><i class="el-icon-minus el-icon" @click="handleClickMinus"></i>{{title}}</span>
     <el-form-item label="名称">
       <el-input v-model="value.name" />
     </el-form-item>
@@ -47,7 +47,7 @@ export default {
 <style lang="scss">
 
 .hero-skill-input {
-  margin-bottom: 20px;
+  margin-top: 20px;
   .title-main {
     .el-icon {
       padding: 2px 5px;

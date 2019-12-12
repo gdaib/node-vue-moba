@@ -12,7 +12,13 @@
       </div>
     </div>
     <div class="hero-edit-page-content">
-      <el-button v-if="showAddSkill" icon="el-icon-plus" type="text" @click="handleAddSkill">添加技能</el-button>
+      <el-button
+        v-if="showAddSkill"
+        icon="el-icon-plus"
+        type="primary"
+        size="small"
+        @click="handleAddSkill"
+      >添加技能</el-button>
       <div v-if="!showAddSkill">
         <el-form-renderer
           key="attrsForm"
@@ -45,6 +51,16 @@
 import UploadToAli from "@femessage/upload-to-ali";
 
 import HeroSkillInput from "../components/hero-skill-input";
+
+import { checkDataIsEmpty } from "@/utils/validate";
+
+// 生成一个新的英雄数据
+const genrateSkillObj = () => ({
+  name: "",
+  icon: "",
+  description: "",
+  tips: ""
+});
 
 export default {
   components: {
@@ -147,7 +163,7 @@ export default {
           }
         }
       ],
-      skillContent: [{}]
+      skillContent: [genrateSkillObj()]
     };
   },
   computed: {
@@ -159,11 +175,18 @@ export default {
     handleChange(id) {
       this.activeTab = id;
     },
-    handleClickMinus({ index }) {
-      this.skillContent.splice(index, 1)
+    async handleClickMinus({ index }) {
+      const data = this.skillContent[index];
+
+      !checkDataIsEmpty(data) &&
+        (await this.$confirm("确定要删除该条英雄技能数据吗？", "温馨提示", {
+          type: "warning"
+        }));
+
+      this.skillContent.splice(index, 1);
     },
     handleAddSkill() {
-      this.skillContent.push({});
+      this.skillContent.push(genrateSkillObj());
     }
   }
 };

@@ -85,3 +85,12 @@ export function isArray(arg) {
   }
   return Array.isArray(arg)
 }
+
+
+// 检查传入的对象是否为空
+export function  checkDataIsEmpty (data) {
+  return Object.keys(data).every(
+    key => data[key] === "" || data[key] === null || data[key] === undefined
+  );
+}
+
