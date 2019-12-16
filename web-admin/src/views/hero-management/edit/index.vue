@@ -33,7 +33,7 @@
     </div>
     <div class="bottom-panel">
       <el-button>取消</el-button>
-      <el-button type="primary">确定</el-button>
+      <el-button type="primary" @click="handleConfirm">确定</el-button>
     </div>
   </div>
 </template>
@@ -42,6 +42,8 @@
 import UploadToAli from "@femessage/upload-to-ali";
 
 import HeroSkillInput from "../components/hero-skill-input";
+
+import { createHero } from '@/api/hero'
 
 export default {
   components: {
@@ -153,6 +155,10 @@ export default {
     }
   },
   methods: {
+    handleConfirm() {
+      const attrsValue = this.$refs.attrsForm.getFormValue()
+      console.log('hello world', attrsValue)
+    },
     handleChange(id) {
       this.activeTab = id;
     },

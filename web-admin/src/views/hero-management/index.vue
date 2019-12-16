@@ -17,6 +17,8 @@ import ElDataTable from '@femessage/el-data-table'
 import previewAvatar from '@/components/preview-avatar'
 import HeroDialog from './components/hero-dialog'
 
+import { heroApi } from '@/api/hero'
+
 export default {
   components: {
     ElDataTable,
@@ -29,7 +31,7 @@ export default {
         visible: false
       },
       tableConfig: {
-        url: '/api/v1/admin/rest/hero',
+        url: heroApi,
         dataPath: 'payload.data',
         totalPath: 'payload.total',
         id: '_id',
