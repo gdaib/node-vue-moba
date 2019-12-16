@@ -10,7 +10,8 @@ Vue.prototype.$uploadRequest = async (file) => {
   const formData = new FormData()
   formData.append('name', 'Multer')
   formData.append('file', file)
-  return await upload(formData).data.payload
+  const res = await upload(formData)
+  return res.data.payload
 }
 
 

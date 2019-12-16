@@ -19,7 +19,7 @@
         size="small"
         @click="handleAddSkill"
       >添加技能</el-button>
-      <div v-if="!showAddSkill">
+      <div v-show="!showAddSkill">
         <el-form-renderer
           key="attrsForm"
           ref="attrsForm"
@@ -27,7 +27,7 @@
           label-width="80px"
         />
       </div>
-      <div v-else>
+      <div v-show="showAddSkill">
         <el-form label-width="80px">
           <hero-skill-input
             v-for="(item, index) in skillContent"
@@ -42,7 +42,7 @@
     </div>
     <div class="bottom-panel">
       <el-button>取消</el-button>
-      <el-button type="primary">确定</el-button>
+      <el-button type="primary" @click="handleConfirm">确定</el-button>
     </div>
   </div>
 </template>
@@ -51,6 +51,9 @@
 import UploadToAli from "@femessage/upload-to-ali";
 
 import HeroSkillInput from "../components/hero-skill-input";
+import { createHero } from "@/api/hero";
+import { getCategories } from "@/api/categories";
+import { getItems } from "@/api/items";
 
 import { checkDataIsEmpty } from "@/utils/validate";
 
@@ -130,12 +133,18 @@ export default {
           id: "followingWindItems",
           label: "顺风出装",
           type: "select",
+          el: {
+            multiple: true
+          },
           options: []
         },
         {
           id: "headWindItems",
           label: "逆风出装",
           type: "select",
+          el: {
+            multiple: true
+          },
           options: []
         },
         {
@@ -163,7 +172,9 @@ export default {
           }
         }
       ],
-      skillContent: [genrateSkillObj()]
+      skillContent: [genrateSkillObj()],
+      cateData: [],
+      itemData: []
     };
   },
   computed: {
@@ -171,7 +182,31 @@ export default {
       return this.activeTab === "skill";
     }
   },
+  mounted() {
+    this.init();
+  },
   methods: {
+    async init() {
+      const [{ data: cateData }, { data: itemData }] = await Promise.all([
+        getCategories(),
+        getItems()
+      ]);
+      this.cateData = cateData.payload.data.map(item => ({
+        value: item._id,
+        label: item.name
+      }));
+      this.itemData = itemData.payload.data.map(item => ({
+        value: item._id,
+        label: item.name
+      }));
+      this.$refs.attrsForm.setOptions("categories", this.cateData);
+      this.$refs.attrsForm.setOptions("followingWindItems", this.itemData);
+      this.$refs.attrsForm.setOptions("headWindItems", this.itemData);
+    },
+    handleConfirm() {
+      const attrsValue = this.$refs.attrsForm.getFormValue();
+      console.log("hello world", attrsValue);
+    },
     handleChange(id) {
       this.activeTab = id;
     },

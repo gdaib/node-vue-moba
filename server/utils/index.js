@@ -27,13 +27,7 @@ export function convertListToTree(list) {
 }
 
 
-
-
-
-export const imageKeyMap = {
-  'image/jpeg': '.jpg',
-  'image/png': '.png'
-}
+const getFileType = (fileName) => fileName.replace(/(.*)\./, '.')
 
 export const uploadFile = (() => {
   const region = process.env.OSS_REGION
@@ -47,9 +41,10 @@ export const uploadFile = (() => {
   const dir = process.env.OSS_DIR;
 
   return async (file) => {
-    const key = imageKeyMap[file.mimetype];
+    const key = getFileType(file.originalname);
     const fileName = `${Date.now().toString(16)}${key}`
     const path = `${dir}${fileName}`;
+ 
     await aliOSSclient.put(path, file.buffer)
     return `//${bucket}.${region}.aliyuncs.com/${path}`
   }

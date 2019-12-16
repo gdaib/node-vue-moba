@@ -1,9 +1,9 @@
 import axios from "@/http";
 
-const prefix = "/api/v1/admin";
-const apiType = "/rest/categories";
+const prefix = "/api/v1/admin",
+  apiType = "/rest/categories",
 
-const api = `${prefix}${apiType}`;
+  api = `${prefix}${apiType}`;
 
 // 创建分类
 export const createCategory = params => axios.post(`${api}`, params);
@@ -17,6 +17,9 @@ export const putCategory = ({ id, ...params }) =>
 
 // 获取分类树
 export const getCategoriesTree = () => axios.get(`${api}/tree`);
+
+// 获取分类
+export const getCategories = () => axios.get(`${api}`)
 
 // 树排序
 export const handleCategoriesSort = data => axios.post(`${api}/sort`, data);

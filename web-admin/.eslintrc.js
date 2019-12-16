@@ -19,7 +19,6 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'one-var': 1, //禁止声明var
     camelcase: 'off', //命名规范
     'no-extra-boolean-cast': 'off', //禁止不必要的Bool转换
     'arrow-parens': 0, //箭头函数形参加括号
