@@ -109,24 +109,36 @@ export default {
           id: "difficute",
           label: "难度",
           type: "rate",
+          el: {
+            max: 10
+          },
           default: 0
         },
         {
           id: "skills",
           label: "技能",
           type: "rate",
+          el: {
+            max: 10
+          },
           default: 0
         },
         {
           id: "attack",
           label: "攻击",
           type: "rate",
+          el: {
+            max: 10
+          },
           default: 0
         },
         {
           id: "survive",
           label: "生存",
           type: "rate",
+          el: {
+            max: 10
+          },
           default: 0
         },
         {
@@ -157,7 +169,7 @@ export default {
         },
         {
           id: "battleTips",
-          label: "使用技巧",
+          label: "对抗技巧",
           type: "input",
           el: {
             type: "textarea"
@@ -205,7 +217,22 @@ export default {
     },
     handleConfirm() {
       const attrsValue = this.$refs.attrsForm.getFormValue();
-      console.log("hello world", attrsValue);
+
+      const params = {
+        ...attrsValue,
+        skills: this.skillContent,
+        scores: {
+          difficult: attrsValue.difficult,
+          skills: attrsValue.skills,
+          attack: attrsValue.attack,
+          survive: attrsValue.survive
+        }
+      };
+
+      createHero(params).then(() => {
+        this.$message.success("操作成功");
+        this.$router.push("/hero-management/index");
+      });
     },
     handleChange(id) {
       this.activeTab = id;
