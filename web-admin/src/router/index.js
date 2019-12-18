@@ -126,6 +126,18 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/article',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/article/index'),
+        name: 'article',
+        meta: { title: '文章管理页面' }
+      }
+    ]
+  },
   // {
   //   path: '/documentation',
   //   component: Layout,
