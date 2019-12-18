@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import ElDataTable from '@femessage/el-data-table'
-import previewAvatar from '@/components/preview-avatar'
-import HeroDialog from './components/hero-dialog'
+import ElDataTable from "@femessage/el-data-table";
+import previewAvatar from "@/components/preview-avatar";
+import HeroDialog from "./components/hero-dialog";
 
-import { heroApi } from '@/api/hero'
+import { heroApi } from "@/api/hero";
 
 export default {
   components: {
@@ -32,39 +32,52 @@ export default {
       },
       tableConfig: {
         url: heroApi,
-        dataPath: 'payload.data',
-        totalPath: 'payload.total',
-        id: '_id',
+        dataPath: "payload.data",
+        totalPath: "payload.total",
+        id: "_id",
         hasNew: false,
         hasEdit: false,
         headerButtons: [
           {
-            text: '新建',
-            type: 'primary',
+            text: "新建",
+            type: "primary",
             atClick: () => {
-              this.heroDialog.visible = true
+              this.heroDialog.visible = true;
               this.$router.push({
-                path: '/hero-management/edit'
-              })
-              return false
+                path: "/hero-management/edit"
+              });
+              return false;
+            }
+          }
+        ],
+        extraButtons: [
+          {
+            text: "编辑",
+            atClick: row => {
+              this.$router.push({
+                path: "/hero-management/edit",
+                query: {
+                  id: row._id
+                }
+              });
+              return false;
             }
           }
         ],
         columns: [
           {
-            label: '英雄名称',
-            prop: 'name'
+            label: "英雄名称",
+            prop: "name"
           }
         ]
       }
-    }
+    };
   }
-}
+};
 </script>
 
 <style lang="scss">
 .hero-page {
   padding: 20px;
-
 }
 </style>

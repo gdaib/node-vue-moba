@@ -1,8 +1,8 @@
 <template>
   <div class="flod-card">
-    <div class="flod-card-header">
+    <div class="flod-card-header" @click="toggleShow">
       <div class="flod-card-header-title">
-        <slot name="tilte" >{{title}}</slot>
+        <slot name="tilte">{{title}}</slot>
       </div>
       <i
         class="el-icon-arrow-up flod-card-header-icon"
@@ -27,15 +27,18 @@ export default {
   },
   props: {
     title: String,
-    value: {
-      type: Object,
-      default: () => ({})
+    defaultVisible: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     return {
       show: true
     };
+  },
+  mounted() {
+    this.show = this.defaultVisible;
   },
   computed: {
     icon() {

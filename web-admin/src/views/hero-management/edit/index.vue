@@ -11,7 +11,7 @@
         >{{ tab.label }}</div>
       </div>
     </div>
-    <div class="hero-edit-page-content">
+    <div class="hero-edit-page-content" v-loading="loading">
       <el-button
         v-if="showAddSkill"
         icon="el-icon-plus"
@@ -51,15 +51,15 @@
 import UploadToAli from "@femessage/upload-to-ali";
 
 import HeroSkillInput from "../components/hero-skill-input";
-import { createHero } from "@/api/hero";
+import { createHero, getHero, putHero } from "@/api/hero";
 import { getCategories } from "@/api/categories";
 import { getItems } from "@/api/items";
 
 import { checkDataIsEmpty } from "@/utils/validate";
 
 // 生成一个新的英雄数据
-const genrateSkillObj = () => ({
-  name: "",
+const genrateSkillObj = (index = 0) => ({
+  name: `技能${index}`,
   icon: "",
   description: "",
   tips: ""
@@ -103,10 +103,13 @@ export default {
           id: "categories",
           label: "类型",
           type: "select",
+          el: {
+            multiple: true
+          },
           options: []
         },
         {
-          id: "difficute",
+          id: "difficult",
           label: "难度",
           type: "rate",
           el: {
@@ -186,19 +189,38 @@ export default {
       ],
       skillContent: [genrateSkillObj()],
       cateData: [],
-      itemData: []
+      itemData: [],
+      loading: false
     };
   },
   computed: {
     showAddSkill() {
       return this.activeTab === "skill";
+    },
+    id() {
+      return this.$route.query.id;
     }
   },
-  mounted() {
-    this.init();
+  async mounted() {
+    await this.init();
   },
   methods: {
+    async getHeroDetail() {
+      const { data } = await getHero(this.id);
+
+      const formData = {
+        ...data.payload,
+        ...data.payload.scores
+      };
+
+      this.$refs.attrsForm.updateForm(formData);
+
+      this.skillContent = data.payload.skills;
+      this.loading = false;
+    },
     async init() {
+      this.loading = true;
+
       const [{ data: cateData }, { data: itemData }] = await Promise.all([
         getCategories(),
         getItems()
@@ -214,25 +236,38 @@ export default {
       this.$refs.attrsForm.setOptions("categories", this.cateData);
       this.$refs.attrsForm.setOptions("followingWindItems", this.itemData);
       this.$refs.attrsForm.setOptions("headWindItems", this.itemData);
+      if (this.id) {
+        this.getHeroDetail();
+      } else {
+        this.loading = false;
+      }
     },
     handleConfirm() {
       const attrsValue = this.$refs.attrsForm.getFormValue();
 
       const params = {
         ...attrsValue,
-        skills: this.skillContent,
+        skills: this.skillContent.filter(v => !checkDataIsEmpty(v)),
         scores: {
           difficult: attrsValue.difficult,
           skills: attrsValue.skills,
           attack: attrsValue.attack,
           survive: attrsValue.survive
-        }
+        },
+        id: this.id
       };
 
-      createHero(params).then(() => {
-        this.$message.success("操作成功");
-        this.$router.push("/hero-management/index");
-      });
+      const method = params.id ? putHero : createHero;
+      this.loading = true;
+
+      method(params)
+        .then(() => {
+          this.$message.success("操作成功");
+          this.$router.push("/hero-management/index");
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     handleChange(id) {
       this.activeTab = id;
@@ -248,7 +283,7 @@ export default {
       this.skillContent.splice(index, 1);
     },
     handleAddSkill() {
-      this.skillContent.push(genrateSkillObj());
+      this.skillContent.push(genrateSkillObj(this.skillContent.length));
     }
   }
 };

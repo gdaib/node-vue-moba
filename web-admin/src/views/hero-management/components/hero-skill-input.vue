@@ -1,6 +1,9 @@
 <template>
-  <flow-card class="hero-skill-input">
-    <span slot="tilte" class="title-main" title="删除"><i class="el-icon-minus el-icon" @click="handleClickMinus"></i>{{title}}</span>
+  <flow-card class="hero-skill-input" :default-visible="false">
+    <span slot="tilte" class="title-main" title="删除">
+      <i class="el-icon-minus el-icon" @click.stop="handleClickMinus"></i>
+      {{value.name}}
+    </span>
     <el-form-item label="名称">
       <el-input v-model="value.name" />
     </el-form-item>
@@ -38,14 +41,13 @@ export default {
   },
   methods: {
     handleClickMinus() {
-      this.$emit('handleClickMinus', this.extraData)
+      this.$emit("handleClickMinus", this.extraData);
     }
   }
 };
 </script>
 
 <style lang="scss">
-
 .hero-skill-input {
   margin-top: 20px;
   .title-main {
