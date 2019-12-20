@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ElDataTable from '@femessage/el-data-table'
+import ElDataTable from "@femessage/el-data-table";
 
 export default {
   components: {
@@ -17,7 +17,18 @@ export default {
         url: "/api/v1/admin/rest/article",
         dataPath: "payload.data",
         totalPath: "payload.total",
-        id: "_id"
+        id: "_id",
+        hasNew: false,
+        headerButtons: [
+          {
+            text: "新增",
+            type: "primary",
+            atClick: () => {
+              this.$router.push("/article/new");
+              return false;
+            }
+          }
+        ]
       }
     };
   }

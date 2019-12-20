@@ -132,9 +132,23 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/article/index'),
+        component: () => import('@/views/article/index/index.vue'),
         name: 'article',
         meta: { title: '文章管理页面' }
+      },
+      {
+        path: 'edit',
+        hidden: true,
+        component: () => import('@/views/article/edit/index.vue'),
+        name: 'article-edit',
+        meta: { title: '编辑文章' }
+      },
+      {
+        path: 'new',
+        hidden: true,
+        component: () => import('@/views/article/edit/index.vue'),
+        name: 'article-new',
+        meta: { title: '新增文章' }
       }
     ]
   },

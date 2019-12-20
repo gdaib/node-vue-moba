@@ -122,10 +122,10 @@ export default {
       const elType = data.type
       if (elType === 'checkbox-button') data.type = 'checkbox-group'
       else if (elType === 'radio-button') data.type = 'radio-group'
-      const props = { ...obj, value, ...this.propsInner }
+      const props = { ...obj, value, ...this.propsInner, placeholder: `请输入${data.label}` }
       this.disabled && (props.disabled = this.disabled) // 只能全局禁用, false时不处理
       const { updateForm } = this.$parent.$parent
-      const { on = {}} = data
+      const { on = {} } = data
       return h(
         data.component || 'el-' + elType,
         {
@@ -150,7 +150,7 @@ export default {
             change: (value, ...rest) => {
               const trimVal =
                 typeof value === 'string' &&
-                (data.trim === undefined || data.trim)
+                  (data.trim === undefined || data.trim)
                   ? value.trim()
                   : value
               this.$emit('updateValue', { id: data.id, value: trimVal })
