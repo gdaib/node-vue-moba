@@ -2,6 +2,7 @@ import Vue from 'vue';
 import { MessageBox } from 'element-ui'
 import Axios from '@/http'
 import { upload } from '@/api/common'
+import { parseTime } from '@/utils/index.js'
 
 Vue.prototype.$axios = Axios
 
@@ -44,3 +45,5 @@ Vue.prototype.$loadingConfirm = function ({
     }
   }).catch(e => Promise.reject(e))
 }
+
+Vue.prototype.parseTime = parseTime

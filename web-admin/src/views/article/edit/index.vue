@@ -9,7 +9,7 @@ import Tinymce from "@/components/Tinymce";
 import NormalPage from "@/container/normal-page";
 import { Rate } from "element-ui";
 
-import { createArticle, getArticle } from "@/api/article-api";
+import { createArticle, getArticle, saveArticle } from "@/api/article-api";
 
 export default {
   components: {
@@ -74,10 +74,20 @@ export default {
           form.validate(flag => {
             if (!flag) return;
 
-            const params = form.getFormValue();
+            const data = form.getFormValue();
 
-            createArticle(params).then(() => {
+            const params = {
+              ...data,
+              id: this.id
+            };
+
+            const method = this.isEdit ? saveArticle : createArticle;
+
+            method(params).then(() => {
               this.$message.success("操作成功");
+              setTimeout(() => {
+                this.$router.back();
+              }, 1500);
             });
           });
         }

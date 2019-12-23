@@ -20,6 +20,29 @@ export default {
         id: "_id",
         hasEdit: false,
         hasNew: false,
+        columns: [
+          {
+            prop: "title",
+            label: "文章标题"
+          },
+          {
+            prop: "summary",
+            label: "文章简介"
+          },
+          {
+            label: "发布状态",
+            formatter: row => {
+              const arr = ["草稿", "已发布"];
+              return arr[row.status];
+            }
+          },
+          {
+            label: '创建时间',
+            formatter: row => {
+              return this.parseTime(row.createTime)
+            }
+          }
+        ],
         headerButtons: [
           {
             text: "新增",
@@ -32,15 +55,15 @@ export default {
         ],
         extraButtons: [
           {
-            text: '编辑',
-            atClick: (row) => {
+            text: "编辑",
+            atClick: row => {
               this.$router.push({
-                path: '/article/edit',
+                path: "/article/edit",
                 query: {
                   articleId: row._id
                 }
-              })
-              return false
+              });
+              return false;
             }
           }
         ]
