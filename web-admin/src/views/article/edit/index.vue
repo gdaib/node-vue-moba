@@ -10,6 +10,7 @@ import NormalPage from "@/container/normal-page";
 import { Rate } from "element-ui";
 
 import { createArticle, getArticle, saveArticle } from "@/api/article-api";
+import { getCategories } from "@/api/categories";
 
 export default {
   components: {
@@ -26,14 +27,21 @@ export default {
         },
         {
           type: "select",
+          label: "标签",
+          options: [],
           id: "categories",
           el: {
             multiple: true
           },
-          remote: () => {
-            return [];
-          },
-          label: "标签"
+          remote: {
+            request: async () => {
+              const { data } = await getCategories();
+              return data.payload.data.map(v => ({
+                label: v.name,
+                value: v._id
+              }));
+            }
+          }
         },
         {
           id: "importance",
@@ -87,7 +95,7 @@ export default {
               this.$message.success("操作成功");
               setTimeout(() => {
                 this.$router.back();
-              }, 1500);
+              }, 0);
             });
           });
         }
