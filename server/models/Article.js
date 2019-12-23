@@ -4,7 +4,7 @@ const DRAFT = 0;
 const PUBLISH = 1;
 
 const schema = new mongoose.Schema({
-  categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: 'Category' }],
+  categories: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Category" }],
   title: { type: String },
   importance: Number,
   summary: { type: String }, // 简介
@@ -18,10 +18,10 @@ const schema = new mongoose.Schema({
     default: Date.now
   },
   publishTime: {
-    type: Date,
-    default: Date.now
+    type: Date
   },
-  status: { // 发布状态
+  status: {
+    // 发布状态
     type: Number,
     enum: [DRAFT, PUBLISH],
     default: DRAFT

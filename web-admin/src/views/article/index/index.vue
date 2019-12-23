@@ -18,6 +18,7 @@ export default {
         dataPath: "payload.data",
         totalPath: "payload.total",
         id: "_id",
+        hasEdit: false,
         hasNew: false,
         headerButtons: [
           {
@@ -26,6 +27,20 @@ export default {
             atClick: () => {
               this.$router.push("/article/new");
               return false;
+            }
+          }
+        ],
+        extraButtons: [
+          {
+            text: '编辑',
+            atClick: (row) => {
+              this.$router.push({
+                path: '/article/edit',
+                query: {
+                  articleId: row._id
+                }
+              })
+              return false
             }
           }
         ]
