@@ -84,86 +84,69 @@ export const constantRoutes = [
     ]
   },
   {
-    path: "/categoires",
+    path: "/content",
+    meta: {
+      title: "内容管理",
+      icon: "documentation"
+    },
     component: Layout,
     children: [
       {
-        path: "index",
-        component: () => import("@/views/categories/index"),
-        name: "categories",
-        meta: { title: "标签管理页面" }
-      }
-    ]
-  },
-  {
-    path: "/items",
-    component: Layout,
-    children: [
-      {
-        path: "index",
+        path: "/items/index",
         component: () => import("@/views/items/index"),
         name: "items",
         meta: { title: "装备管理页面" }
-      }
-    ]
-  },
-  {
-    path: "/hero-management",
-    component: Layout,
-    children: [
-      {
-        path: "index",
-        component: () => import("@/views/hero-management/index"),
-        name: "hero-management",
-        meta: { title: "英雄管理页面" }
       },
       {
-        path: "edit",
-        hidden: true,
+        path: "/hero-management/index",
+        component: () => import("@/views/hero-management/index"),
+        name: "hero-management",
+        meta: { title: "英雄管理" }
+      },
+      {
+        path: "/hero-management/edit",
         component: () => import("@/views/hero-management/edit"),
         name: "hero-edit",
+        hidden: true,
         meta: { title: "英雄编辑页面" }
-      }
-    ]
-  },
-  {
-    path: "/article",
-    component: Layout,
-    children: [
+      },
       {
-        path: "index",
+        path: "/hero-article/index",
         component: () => import("@/views/article/index/index.vue"),
         name: "article",
         meta: { title: "文章管理页面" }
       },
       {
-        path: "edit",
+        path: "/hero-article/edit",
         hidden: true,
         component: () => import("@/views/article/edit/index.vue"),
         name: "article-edit",
         meta: { title: "编辑文章" }
-      },
-      {
-        path: "new",
-        hidden: true,
-        component: () => import("@/views/article/edit/index.vue"),
-        name: "article-new",
-        meta: { title: "新增文章" }
       }
     ]
   },
   {
-    path: "/ad",
+    path: "/",
     component: Layout,
+    meta: {
+      title: "运营管理",
+      icon: "education"
+    },
     children: [
       {
-        path: "index",
+        path: "/categories/index",
+        component: () => import("@/views/categories/index"),
+        name: "categories",
+        meta: { title: "标签管理页面" }
+      },
+      {
+        path: "/ad/index",
         component: () => import("@/views/ad/index"),
         name: "ad",
         meta: { title: "广告管理页面" }
       },
       {
-        path: "detail",
+        path: "/ad/detail",
         component: () => import("@/views/ad/detail"),
         name: "ad",
         hidden: true,
@@ -171,6 +154,20 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: "/setting",
+    component: Layout,
+    meta: { title: "系统设置", icon: "form" },
+    children: [
+      {
+        path: "/admin-user/list",
+        component: () => import("@/views/admin-user/index"),
+        name: "admin-user",
+        meta: { title: "管理员列表" }
+      }
+    ]
+  },
+
   // {
   //   path: '/documentation',
   //   component: Layout,
