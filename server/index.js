@@ -5,11 +5,13 @@ import cors from "koa2-cors";
 
 import adminRouter from "./routes/admin";
 import commonRouter from "./routes/common";
-import db from "./plugins/db";
+import "./plugins/db";
+import resPlugin from  "./plugins/res";
 
 const app = new Koa();
 
 app.use(bodyParser());
+app.use(resPlugin);
 app.use(
   cors({
     allowMethods: ["GET", "PUT", "POST", "PATCH", "DELETE", "HEAD", "OPTIONS"],
