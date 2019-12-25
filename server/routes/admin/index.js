@@ -20,7 +20,7 @@ router.get("/rest/:resource", async (ctx, next) => {
   }
 
   const { size, page = 1 } = ctx.query;
-  
+
   const skip = size * (page - 1);
 
   const data = await ctx.Model.find()
@@ -107,6 +107,21 @@ router.put("/rest/:resource/:id", async (ctx, next) => {
     msg: "success",
     payload: true
   };
+});
+
+router.post("/user/login", async (ctx, next) => {
+  const { username, password } = ctx.request.body;
+  // 1. 根据用户名找密码
+  // 2. 校验密码
+  // 3. 返回 token
+  const AdminUser = require("../../models/AdminUser").default;
+  const user = await AdminUser.findByUserName(username);
+
+  if (!user) {
+    return ctx.error("用户不存在", -1, 422);
+  }
+  
+  console.log(ctx.request.body);
 });
 
 export default router;
