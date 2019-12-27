@@ -118,10 +118,14 @@ router.post("/user/login", async (ctx, next) => {
   const user = await AdminUser.findByUserName(username);
 
   if (!user) {
-    return ctx.error("用户不存在", -1, 422);
+    return ctx.error("用户不存在", -1);
   }
-  
-  console.log(ctx.request.body);
+
+  if (!(await user.validatePw(password))) {
+    return ctx.error('用户名或密码错误', -1)
+  }
+
+  ctx.result('ok')
 });
 
 export default router;

@@ -15,9 +15,8 @@ schema.statics.findByUserName = function(username) {
   return this.findOne({ username });
 };
 
-schema.methods.validatePw = async function(pw1, pw2) {
-  // const data = await schema.findByUserName(user.username);
-  return pw1 === ph.generate(pw2);
+schema.methods.validatePw = async function(password) {
+  return ph.verify(password, this.password);
 };
 
 export default mongoose.model("AdminUser", schema);
