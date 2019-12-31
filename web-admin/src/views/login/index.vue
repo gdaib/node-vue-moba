@@ -187,6 +187,7 @@ export default {
                 path: this.redirect || "/",
                 query: this.otherQuery
               });
+
               this.loading = false;
             })
             .catch(() => {
