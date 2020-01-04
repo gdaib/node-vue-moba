@@ -188,6 +188,8 @@ export default {
                 query: this.otherQuery
               });
 
+              console.log('hlsdjflsdkjflsdf')
+
               this.loading = false;
             })
             .catch(() => {

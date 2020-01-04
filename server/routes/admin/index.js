@@ -33,7 +33,7 @@ router.post("/user/login", async (ctx, next) => {
 router.use(jwt);
 
 router.get("/user/info", async (ctx, next) => {
-  console.log("hello world", ctx.query.user);
+
   return ctx.result(ctx.query.user);
 });
 
